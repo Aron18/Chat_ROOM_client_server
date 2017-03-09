@@ -9,6 +9,7 @@ public class client{
 			System.out.println("success");	
 		}catch(Exception e){
 			System.out.println("Fail");
+			System.exit(0);
 		}
 	}
 }

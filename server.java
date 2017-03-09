@@ -9,6 +9,7 @@ public class server{
 			server= new ServerSocket(4700);		
 		}catch(Exception e){
 			System.out.println("fail and exit");
+			System.exit(0);
 		}
 		while(true){
 		Socket socket = null;
