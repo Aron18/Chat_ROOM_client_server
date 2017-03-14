@@ -39,7 +39,7 @@ public class server{
 
 			while(true){
 				Socket clientSocket = serverSock.accept();
-				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
+				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream()); 
 				clientOutputStreams.add(writer);
 
 				Thread t = new Thread(new ClientHandler(clientSocket));
