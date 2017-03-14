@@ -15,6 +15,7 @@ public class server{
 				InputStreamReader isReader = new InputStreamReader(sock.getInputStream());
 				reader = new BufferedReader(isReader);
 			}catch(Exception ex){
+				System.out.println("fail");
 				ex.printStackTrace();
 			}
 		}
@@ -47,6 +48,7 @@ public class server{
 				System.out.println("got a connection");
 			}
 		}catch(Exception ex){
+			System.out.println("can't get the connection");
 			ex.printStackTrace();
 		}
 	}

@@ -8,37 +8,54 @@ import java.awt.event.*;
 public class client{
 	String username;	//user name
 	JTextField usrname;
+	BufferedReader reader;
 	PrintWriter writer;
+	Socket sock;
 
 	public void login(){
 		JFrame frame1 = new JFrame("login in panel");
 		JPanel logininPanel =  new JPanel();
+		JLabel label1=new JLabel("UR NAME"); 
 		usrname = new JTextField(20);
 		JButton loginButtion = new JButton("login");
+		JScrollPane qScroller = new JScrollPane(usrname);
+		qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		loginButtion.addActionListener(new loginButtionListener());
+		logininPanel.add(qScroller);
+		logininPanel.add(label1);
+		logininPanel.add(usrname);
 		logininPanel.add(loginButtion);
+		setUpNetworking();
+		
 		frame1.getContentPane().add(BorderLayout.CENTER,logininPanel);
 		frame1.setSize(400,500);
 		frame1.setVisible(true);	//show the login panel
 	}
+
+	private void setUpNetworking(){		
+		try{
+			sock = new Socket("127.0.0.1",5000);
+			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
+			reader = new BufferedReader(streamReader);
+			writer = new PrintWriter(sock.getOutputStream());
+			System.out.println("networking established");
+		}catch(IOException ex){
+			ex.printStackTrace();
+		}
+	}
+
 	public static void main(String[] args){
 		client Client = new client();
 		Client.login();
-		
-		try{
-			Socket socket = new Socket("127.0.0.1",4700);	//ask for connection
-			System.out.println("success");	
-		}catch(Exception e){
-			System.out.println("fail");
-			System.exit(0);
-		}
 	}
 
 	public class loginButtionListener implements ActionListener{
 			public void actionPerformed(ActionEvent ev){
 				try{
+					S
 					username = usrname.getText();
-					writer.println(username);
+					writer.println(usrname.getText());
 					writer.flush();	//send the username;
 				}catch(Exception ex){
 					ex.printStackTrace();
