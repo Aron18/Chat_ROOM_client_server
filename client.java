@@ -4,7 +4,8 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
+import com.User;
+ 
 public class client{
 	String username;	//user name
 	JTextField usrname;
