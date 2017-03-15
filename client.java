@@ -1,11 +1,12 @@
 import java.io.*;
+import java.io.ObjectOutputStream; 
 import java.net.*;
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import com.User;
- 
+
 public class client{
 	String username;	//user name
 	JTextField usrname;
@@ -54,9 +55,12 @@ public class client{
 	public class loginButtionListener implements ActionListener{
 			public void actionPerformed(ActionEvent ev){
 				try{
-					username = usrname.getText();
-					writer.println(usrname.getText());
-					writer.flush();	//send the username;
+					ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());  
+					User user = new User();
+					user.name = usrname.getText();
+					user.type = "User_name";
+					oos.writeObject(user);  
+            		oos.flush(); 	//send the user name
 				}catch(Exception ex){
 					ex.printStackTrace();
 				}
