@@ -5,21 +5,21 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import com.User;
+import com.Message;
 
 public class client{
 	String username;	//user name
 	JTextField usrname;
 	BufferedReader reader;
 	PrintWriter writer;
-	Socket sock;
-
+	Socket socket;
+	ObjectOutputStream oos;
 	private void setUpNetworking(){		
 		try{
-			sock = new Socket("127.0.0.1",5000);
-			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
+			socket = new Socket("127.0.0.1",5000);
+			InputStreamReader streamReader = new InputStreamReader(socket.getInputStream());
 			reader = new BufferedReader(streamReader);
-			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+			oos = new ObjectOutputStream(socket.getOutputStream());
 			System.out.println("networking established");
 		}catch(IOException ex){
 			ex.printStackTrace();
@@ -55,7 +55,7 @@ public class client{
 	public class loginButtionListener implements ActionListener{
 			public void actionPerformed(ActionEvent ev){
 				try{
-					User user = new User();
+					Message user = new Message();
 					user.name = usrname.getText();
 					user.type = "User_name";
 					oos.writeObject(user);  
