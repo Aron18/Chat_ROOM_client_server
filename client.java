@@ -19,7 +19,7 @@ public class client{
 			sock = new Socket("127.0.0.1",5000);
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
-			writer = new PrintWriter(sock.getOutputStream());
+			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 			System.out.println("networking established");
 		}catch(IOException ex){
 			ex.printStackTrace();
@@ -55,7 +55,6 @@ public class client{
 	public class loginButtionListener implements ActionListener{
 			public void actionPerformed(ActionEvent ev){
 				try{
-					ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());  
 					User user = new User();
 					user.name = usrname.getText();
 					user.type = "User_name";
