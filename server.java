@@ -15,7 +15,6 @@ public class server{
 				InputStreamReader isReader = new InputStreamReader(sock.getInputStream());
 				reader = new BufferedReader(isReader);
 			}catch(Exception ex){
-				System.out.println("fail");
 				ex.printStackTrace();
 			}
 		}
@@ -36,11 +35,11 @@ public class server{
 	public void go(){
 		clientOutputStreams = new ArrayList();
 		try{
-			ServerSocket serverSock = new ServerSocket(4700);
+			ServerSocket serverSock = new ServerSocket(5000);
 
 			while(true){
 				Socket clientSocket = serverSock.accept();
-				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream()); 
+				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
 				clientOutputStreams.add(writer);
 
 				Thread t = new Thread(new ClientHandler(clientSocket));
@@ -48,7 +47,6 @@ public class server{
 				System.out.println("got a connection");
 			}
 		}catch(Exception ex){
-			System.out.println("can't get the connection");
 			ex.printStackTrace();
 		}
 	}
