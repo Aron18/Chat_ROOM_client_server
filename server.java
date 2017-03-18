@@ -12,7 +12,7 @@ public class server{
 	PrintWriter writer;
 
 	public class ClientHandler implements Runnable{
-		//BufferedReader reader;
+		BufferedReader reader;
 		Socket sock;
 		ObjectInputStream ois;
 
@@ -22,7 +22,7 @@ public class server{
 				ois = new ObjectInputStream(new BufferedInputStream(sock.getInputStream()));
 				Object obj = ois.readObject();  //get the object sent bt client
 				//InputStreamReader isReader = new InputStreamReader(sock.getInputStream());
-				//reader = new BufferedReader(isReader);
+				reader = new BufferedReader(obj.getName());
 			}catch(Exception ex){
 				ex.printStackTrace();
 			}
