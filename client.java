@@ -14,7 +14,7 @@ public class client{
 	PrintWriter writer;
 	Socket socket;
 	ObjectOutputStream oos;
-	
+
 	private void setUpNetworking(){		
 		try{
 			socket = new Socket("127.0.0.1",5000);
@@ -61,6 +61,7 @@ public class client{
 					user.type = "User_name";
 					oos.writeObject(user);  
             		oos.flush(); 	//send the user name
+            		System.out.println("test1");
 				}catch(Exception ex){
 					ex.printStackTrace();
 				}

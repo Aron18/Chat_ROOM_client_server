@@ -20,9 +20,9 @@ public class server{
 			try{
 				sock = clientSocket;
 				ois = new ObjectInputStream(new BufferedInputStream(sock.getInputStream()));
-				Object obj = ois.readObject();  //get the object sent bt client
+				//Object obj = ois.readObject();  //get the object sent bt client
 				//InputStreamReader isReader = new InputStreamReader(sock.getInputStream());
-				reader = new BufferedReader(obj.getName());
+				//reader = new BufferedReader(isReader);
 			}catch(Exception ex){
 				ex.printStackTrace();
 			}
@@ -32,22 +32,20 @@ public class server{
 			String name;
 			String message;
 			try{
-				while(obj != null) {    
-                	Message user = (Message)obj;
-                	if(user.getType == "User_name"){
-                		name = user.getName();
-
-                		System.out.println("user: " + user.getName());    
-                		System.out.println("password: " + user.getPassword()); 
-                	} 
-           		}
-
+				System.out.println("test1");
+				Object obj = ois.readObject();   
+                Message user = (Message)obj;
+                if(user.getType() == "User_name"){
+                	name = user.getName();
+                	System.out.println("user: " + user.getName());
+                	Hello(name);    
+                } 
 				/*while((message = reader.readLine()) != null){
 					System.out.println("read " + message);
 					Send(message);
 					}*/
 				}catch(Exception ex){
-				ex.printStackTrace();
+					ex.printStackTrace();
 				}
 			}
 		}
@@ -63,8 +61,9 @@ public class server{
 				helloname = new PrintWriter(clientSocket.getOutputStream());
 				writer = new PrintWriter(clientSocket.getOutputStream());
 				clientOutputStreams.add(writer);
+				System.out.println("test");
 
-				Thread t = new Thread(new ClientHandler(clientSocket));
+				Thread t = new Thread(new ClientHandler(clientSocket));	//wait for new user
 				t.start();
 				System.out.println("got a connection");
 			}
@@ -87,10 +86,11 @@ public class server{
 	}
 
 	public void Hello(String message){
-		Interator it = clientOutputStreams.iterator();
-		writer.println("Hello " + name);
+		System.out.println("Hello " + message);
+		writer.println("Hello " + message);
 		writer.flush();
 	}
+
 	public static void main(String[] args){
 		new server().go();
 	}
