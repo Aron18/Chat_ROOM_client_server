@@ -5,22 +5,20 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import com.Message;
 
 public class client{
 	String username;	//user name
 	JTextField usrname;
-	BufferedReader reader;
-	PrintWriter writer;
+	BufferedReader in;
+	PrintWriter out;
 	Socket socket;
-	ObjectOutputStream oos;
+	JButton loginButtion;
 
 	private void setUpNetworking(){		
 		try{
 			socket = new Socket("127.0.0.1",5000);
-			InputStreamReader streamReader = new InputStreamReader(socket.getInputStream());
-			reader = new BufferedReader(streamReader);
-			oos = new ObjectOutputStream(socket.getOutputStream());
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
 			System.out.println("networking established");
 		}catch(IOException ex){
 			ex.printStackTrace();
@@ -33,7 +31,7 @@ public class client{
 		JPanel logininPanel =  new JPanel();
 		JLabel label1=new JLabel("UR NAME"); 
 		usrname = new JTextField(20);
-		JButton loginButtion = new JButton("login");
+		loginButtion = new JButton("login");
 		JScrollPane qScroller = new JScrollPane(usrname);
 		qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -55,13 +53,12 @@ public class client{
 
 	public class loginButtionListener implements ActionListener{
 			public void actionPerformed(ActionEvent ev){
+				Object obj = ev.getSource();
+
 				try{
-					Message user = new Message();
-					user.name = usrname.getText();
-					user.type = "User_name";
-					oos.writeObject(user);  
-            		oos.flush(); 	//send the user name
-            		System.out.println(user.name);
+					if(obj.equals(loginButtion)){
+						;
+					}
 				}catch(Exception ex){
 					ex.printStackTrace();
 				}
