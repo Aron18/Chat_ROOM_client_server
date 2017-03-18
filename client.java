@@ -9,6 +9,7 @@ import java.awt.event.*;
 public class client{
 	String username;	//user name
 	JTextField usrname;
+	JFrame frame1;
 	BufferedReader in;
 	PrintWriter out;
 	Socket socket;
@@ -27,7 +28,7 @@ public class client{
 	
 	public void login(){
 		setUpNetworking();
-		JFrame frame1 = new JFrame("login in panel");
+		frame1 = new JFrame("login in panel");
 		JPanel logininPanel =  new JPanel();
 		JLabel label1=new JLabel("UR NAME"); 
 		usrname = new JTextField(20);
@@ -53,11 +54,16 @@ public class client{
 
 	public class loginButtionListener implements ActionListener{
 			public void actionPerformed(ActionEvent ev){
-				Object obj = ev.getSource();
-
+				Object obj = ev.getSource();	//choose a button to react
+				String name;
 				try{
 					if(obj.equals(loginButtion)){
-						;
+						if(usrname.getText().length() > 0){
+							setUpNetworking();
+							name = "user_name|" + usrname.getText();
+							out.println(name);
+							out.flush();
+						}
 					}
 				}catch(Exception ex){
 					ex.printStackTrace();
