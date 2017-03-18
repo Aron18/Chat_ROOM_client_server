@@ -9,11 +9,14 @@ import java.awt.event.*;
 public class client{
 	String username;	//user name
 	JTextField usrname;
-	JFrame frame1;
+	JFrame frame1;	//login panel
+	JFrame frame2;	//chat panel
 	BufferedReader in;
 	PrintWriter out;
 	Socket socket;
 	JButton loginButtion;
+	JButton sendMessage;
+	JTextArea inputarea;
 
 	private void setUpNetworking(){		
 		try{
@@ -47,6 +50,16 @@ public class client{
 		frame1.setVisible(true);	//show the login panel
 	}
 
+	public void chatPane(){
+		frame2 = new JFrame("Chat Room");
+		JPanel chatP = new JPanel();
+		JTextArea chatpanel = new JTextArea(400,400);	//show the chat history
+		inputarea = new JTextArea(300,200);	//the area to input the message
+		sendMessage = new JButton("Send");
+		sendMessage.addActionListener(new sendMessageListener());
+
+	}
+
 	public static void main(String[] args){
 		client Client = new client();
 		Client.login();
@@ -63,11 +76,32 @@ public class client{
 							name = "user_name|" + usrname.getText();
 							out.println(name);
 							out.flush();
+							frame1.setVisible(false);
+							frame2.setVisible(true);
 						}
 					}
 				}catch(Exception ex){
 					ex.printStackTrace();
 				}
 			}
+	}
+
+	public class sendMessageListener implements ActionListener{
+		public void actionPerformed(ActionEvent ev){
+			Object obj = ev.getSource();
+			String message;
+			try{
+				if(obj.equals(sendMessage)){
+					if(inputarea.getText().length() > 0){
+						System.out.println(inputarea.getText());
+						message = "Message|" + inputarea.getText();
+						out.println(message);
+						out.flush();
+					}
+				}
+			}catch(Exception ex){
+				ex.printStackTrace();
+			}
+		}
 	}
 }
