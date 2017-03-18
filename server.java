@@ -6,28 +6,46 @@ import com.Message;
 
 public class server{
 	ArrayList clientOutputStreams;
+	ArrayList outputname;
+	ObjectOutputStream oos;
+	PrintWriter helloname;
+	PrintWriter writer;
 
 	public class ClientHandler implements Runnable{
-		BufferedReader reader;
+		//BufferedReader reader;
 		Socket sock;
+		ObjectInputStream ois;
 
 		public ClientHandler(Socket clientSocket){
 			try{
 				sock = clientSocket;
-				InputStreamReader isReader = new InputStreamReader(sock.getInputStream());
-				reader = new BufferedReader(isReader);
+				ois = new ObjectInputStream(new BufferedInputStream(sock.getInputStream()));
+				Object obj = ois.readObject();  //get the object sent bt client
+				//InputStreamReader isReader = new InputStreamReader(sock.getInputStream());
+				//reader = new BufferedReader(isReader);
 			}catch(Exception ex){
 				ex.printStackTrace();
 			}
 		}
 
 		public void run(){
+			String name;
 			String message;
 			try{
-				while((message = reader.readLine()) != null){
+				while(obj != null) {    
+                	Message user = (Message)obj;
+                	if(user.getType == "User_name"){
+                		name = user.getName();
+
+                		System.out.println("user: " + user.getName());    
+                		System.out.println("password: " + user.getPassword()); 
+                	} 
+           		}
+
+				/*while((message = reader.readLine()) != null){
 					System.out.println("read " + message);
-					tellEveryone(message);
-					}
+					Send(message);
+					}*/
 				}catch(Exception ex){
 				ex.printStackTrace();
 				}
@@ -36,12 +54,14 @@ public class server{
 
 	public void go(){
 		clientOutputStreams = new ArrayList();
+		outputname = new ArrayList();
 		try{
 			ServerSocket serverSock = new ServerSocket(5000);
 
 			while(true){
 				Socket clientSocket = serverSock.accept();
-				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
+				helloname = new PrintWriter(clientSocket.getOutputStream());
+				writer = new PrintWriter(clientSocket.getOutputStream());
 				clientOutputStreams.add(writer);
 
 				Thread t = new Thread(new ClientHandler(clientSocket));
@@ -53,11 +73,11 @@ public class server{
 		}
 	}
 
-	public void tellEveryone(String message){
+	public void Send(String message){
 		Iterator it = clientOutputStreams.iterator();
 		while(it.hasNext()){
 			try{
-				PrintWriter writer = (PrintWriter)it.next();
+				writer = (PrintWriter)it.next();
 				writer.println(message);
 				writer.flush();
 			}catch(Exception ex){
@@ -66,6 +86,11 @@ public class server{
 		}
 	}
 
+	public void Hello(String message){
+		Interator it = clientOutputStreams.iterator();
+		writer.println("Hello " + name);
+		writer.flush();
+	}
 	public static void main(String[] args){
 		new server().go();
 	}
