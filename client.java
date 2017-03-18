@@ -61,7 +61,7 @@ public class client{
 					user.type = "User_name";
 					oos.writeObject(user);  
             		oos.flush(); 	//send the user name
-            		System.out.println("test1");
+            		System.out.println(user.name);
 				}catch(Exception ex){
 					ex.printStackTrace();
 				}

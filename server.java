@@ -35,11 +35,13 @@ public class server{
 				System.out.println("test1");
 				Object obj = ois.readObject();   
                 Message user = (Message)obj;
+                System.out.println("test2");
                 if(user.getType() == "User_name"){
                 	name = user.getName();
                 	System.out.println("user: " + user.getName());
                 	Hello(name);    
-                } 
+                }
+                System.out.println("test3"); 
 				/*while((message = reader.readLine()) != null){
 					System.out.println("read " + message);
 					Send(message);
