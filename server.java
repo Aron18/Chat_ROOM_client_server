@@ -33,11 +33,10 @@ public class server{
 
 			public void run(){
 				try{
-					while(true){
-						;
+					;
+					}cathc(Exception ex){
+						ex.printStackTrace();
 					}
-				}cathc(Exception ex){
-					ex.printStackTrace();
 				}
 			}
 		}
