@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class client{
-	String username;	//user name
+	String name,username;
 	JTextField usrname;
 	JFrame frame1;	//login panel
 	JFrame frame2;	//chat panel
@@ -15,7 +15,7 @@ public class client{
 	PrintWriter out;
 	Socket socket;
 	JButton loginButtion;
-	JButton sendMessage;
+	JButton sendButton;
 	JTextArea inputarea;
 
 	private void setUpNetworking(){		
@@ -45,7 +45,8 @@ public class client{
 		logininPanel.add(label1);
 		logininPanel.add(usrname);
 		logininPanel.add(loginButtion);
-		
+		setUpNetworking();
+
 		frame1.getContentPane().add(BorderLayout.CENTER,logininPanel);
 		frame1.setSize(400,500);
 		frame1.setVisible(true);	//show the login panel
@@ -56,9 +57,24 @@ public class client{
 		JPanel chatP = new JPanel();
 		JTextArea chatpanel = new JTextArea(400,400);	//show the chat history
 		inputarea = new JTextArea(300,200);	//the area to input the message
-		sendMessage = new JButton("Send");
-		sendMessage.addActionListener(new sendMessageListener());
+		sendButton = new JButton("Send");
+		sendButton.addActionListener(new sendButtonListener());
+		
+		JScrollPane qScroller1 = new JScrollPane(chatpanel);
+		qScroller1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		qScroller1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		JScrollPane qScroller2 = new JScrollPane(inputarea);
+		qScroller2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		qScroller2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		chatP.add(qScroller1);
+		chatP.add(qScroller2);
+		chatP.add(sendButton);
 
+		frame2.getContentPane().add(BorderLayout.CENTER,chatP);
+		frame2.setSize(400,700);
+		frame2.setVisible(true);
 	}
 
 	public static void main(String[] args){
@@ -69,41 +85,43 @@ public class client{
 	public class loginButtionListener implements ActionListener{
 			public void actionPerformed(ActionEvent ev){
 				Object obj = ev.getSource();	//choose a button to react
-				String name;
 				try{
-					if(obj.equals(loginButtion)){
+					if(obj.equals(loginButtion))
+					{
+						System.out.println("test");
 						if(usrname.getText().length() > 0){
-							setUpNetworking();
 							name = "user_name|" + usrname.getText();
+							username = usrname.getText();
+							System.out.println(name);
 							out.println(name);
 							out.flush();
-							frame1.setVisible(false);
-							frame2.setVisible(true);
 						}
+						frame1.setVisible(false);
+						//frame2.setVisible(true);
 					}
-				}catch(IOException e){
+				}catch(Exception e){
 					e.printStackTrace();
 					System.out.println("U R offline");
 				}
 			}
 	}
 
-	public class sendMessageListener implements ActionListener{
+	public class sendButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent ev){
 			Object obj = ev.getSource();
 			String message;
 			try{
-				if(obj.equals(sendMessage)){
+				if(obj.equals(sendButton)){
 					if(inputarea.getText().length() > 0){
 						System.out.println(inputarea.getText());
-						message = "Message|" + inputarea.getText();
+						message = "Message|" + inputarea.getText() + "|" + username ;
 						out.println(message);
 						out.flush();
 					}
 				}
-			}catch(IOException e){
+			}catch(Exception e){
 				e.printStackTrace();
-				System.out.println("U r offline");
+				System.out.println("User is offline");
 			}
 		}
 	}
