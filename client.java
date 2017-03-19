@@ -25,6 +25,7 @@ public class client{
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
 			System.out.println("networking established");
 		}catch(IOException ex){
+			System.out.println("Fail");
 			ex.printStackTrace();
 		}
 	}
@@ -80,8 +81,9 @@ public class client{
 							frame2.setVisible(true);
 						}
 					}
-				}catch(Exception ex){
-					ex.printStackTrace();
+				}catch(IOException e){
+					e.printStackTrace();
+					System.out.println("U R offline");
 				}
 			}
 	}
@@ -99,8 +101,9 @@ public class client{
 						out.flush();
 					}
 				}
-			}catch(Exception ex){
-				ex.printStackTrace();
+			}catch(IOException e){
+				e.printStackTrace();
+				System.out.println("U r offline");
 			}
 		}
 	}

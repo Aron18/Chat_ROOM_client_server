@@ -26,6 +26,8 @@ public class server{
 		PrintWriter out;
 
 		public ServerProcess(Socket client){
+			String receive,worked;
+			StringTokenizer	token;
 			socket = client;
 
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));	//get the message
@@ -33,8 +35,18 @@ public class server{
 
 			public void run(){
 				try{
-					;
-					}cathc(Exception ex){
+					while(true){
+						receive = in.readline();
+						token = new StringTokenizer(receive,"|");	//process the message
+						worked = token.nextToken();	//choose the first to start and loop on
+						if(worked.equals("user_name")){
+							hello();
+						}
+						else if (worked.equals("Message")){
+							chat();
+						}
+					}
+					}cathc(IOException e){
 						ex.printStackTrace();
 					}
 				}
