@@ -8,6 +8,7 @@ public class server{
 	String receive,worked;
 	Socket socket;
 	StringTokenizer	token;
+	Set<Socket> hashset;
 
 	public class ServerProcess implements Runnable{
 		BufferedReader in;
@@ -17,7 +18,7 @@ public class server{
 			try{
 				socket = clientSocket;
 				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				out = new PrintWriter(new BufferedWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))));
+				out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
 			}catch(Exception ex){
 				ex.printStackTrace();
 			}
@@ -31,39 +32,62 @@ public class server{
 					token = new StringTokenizer(receive,"|");	//process the message
 					worked = token.nextToken();	//Returns the next token from this string tokenizer
 					if(worked.equals("user_name")){
-						hello();
+						String name1 = token.nextToken();
+						hello(name1);
 					}
 					else if (worked.equals("Message")){
-						chat();
+						String mes = token.nextToken();	//get the message
+						String uer = token.nextToken();	//get the user
+						String messs = uer + " : " + mes;  
+						chat(messs);
 					}
 				}
 			}catch(Exception ex){
 				ex.printStackTrace();
 				}
+			}
 		}
 
-		private void hello(){
-			String name = token.nextToken();	//get the user name
-			out.println("!!!"+ " " + name + " is online now" + "!!!" );
-			out.flush();
-			System.out.println("!!!"+ " " + name + " is online now");
-		}
+	private void hello(String name){
 
-		private void chat(){
-			;
+		for(Socket s : hashset){
+			try{
+				PrintWriter psend = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
+				//String name = token.nextToken();	//get the user name
+				psend.println("!!!"+ " " + name + " is online now" + "!!!" );
+				psend.flush();
+				System.out.println("!!!"+ " " + name + " is online now");
+				}catch(Exception ex){
+				ex.printStackTrace();
+				}
 		}
 	}
+	private void chat(String mess){
+		//String message;
+		for(Socket s : hashset){
+				try{
+					PrintWriter psed = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
+					psed.println(mess);
+					System.out.println(mess);
+				}catch(Exception ex){
+					ex.printStackTrace();
+				}
+			}
+		}
 
 	public void go(){
 		try{
 			ServerSocket serverSock = new ServerSocket(5000);
+			hashset = new HashSet<>();
 			while(true){
 				socket = serverSock.accept();
+				hashset.add(socket); //
 				Thread t = new Thread(new ServerProcess(socket));
 				t.start();
 				System.out.println("get a connection");
 			}
 		}catch(IOException E){
+			E.printStackTrace();
 			System.out.println("fail to connect");
 		}
 	}

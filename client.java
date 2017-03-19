@@ -16,17 +16,21 @@ public class client{
 	Socket socket;
 	JButton loginButtion;
 	JButton sendButton;
-	JTextArea inputarea;
+	JTextArea inputarea,chatpanel;
 
 	private void setUpNetworking(){		
 		try{
 			socket = new Socket("127.0.0.1",5000);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
-			System.out.println("networking established");
-		}catch(IOException ex){
-			System.out.println("Fail");
-			ex.printStackTrace();
+
+			//Thread t = new Thread(new inputListener());
+			//t.start();
+			//System.out.println("networking established");
+
+			}catch(IOException ex){
+				System.out.println("Fail");
+				ex.printStackTrace();
 		}
 	}
 	
@@ -55,31 +59,27 @@ public class client{
 	public void chatPane(){
 		frame2 = new JFrame("Chat Room");
 		JPanel chatP = new JPanel();
-		JTextArea chatpanel = new JTextArea(400,400);	//show the chat history
-		inputarea = new JTextArea(300,200);	//the area to input the message
+		chatpanel = new JTextArea(10,30);	//show the chat history
+		inputarea = new JTextArea(5,20);	//the area to input the message
 		sendButton = new JButton("Send");
+		
 		sendButton.addActionListener(new sendButtonListener());
+		chatpanel.setLineWrap(true);	//change lines
+		chatpanel.setEditable(false);	//don't allow to edit
 		
-		JScrollPane qScroller1 = new JScrollPane(chatpanel);
-		qScroller1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		qScroller1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		
-		JScrollPane qScroller2 = new JScrollPane(inputarea);
-		qScroller2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		qScroller2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		
-		chatP.add(qScroller1);
-		chatP.add(qScroller2);
+		chatP.add(chatpanel);
+		chatP.add(inputarea);
 		chatP.add(sendButton);
 
 		frame2.getContentPane().add(BorderLayout.CENTER,chatP);
-		frame2.setSize(400,700);
-		frame2.setVisible(true);
+		frame2.setSize(400,600);
+		frame2.setVisible(false);
 	}
 
 	public static void main(String[] args){
 		client Client = new client();
 		Client.login();
+		Client.chatPane();
 	}
 
 	public class loginButtionListener implements ActionListener{
@@ -97,7 +97,7 @@ public class client{
 							out.flush();
 						}
 						frame1.setVisible(false);
-						//frame2.setVisible(true);
+						frame2.setVisible(true);
 					}
 				}catch(Exception e){
 					e.printStackTrace();
@@ -113,10 +113,12 @@ public class client{
 			try{
 				if(obj.equals(sendButton)){
 					if(inputarea.getText().length() > 0){
-						System.out.println(inputarea.getText());
-						message = "Message|" + inputarea.getText() + "|" + username ;
+						//System.out.println(inputarea.getText());
+						message = "Message|" + inputarea.getText() + "|" + username;
+						System.out.println(message);
 						out.println(message);
 						out.flush();
+						inputarea.setText("");
 					}
 				}
 			}catch(Exception e){
@@ -125,4 +127,8 @@ public class client{
 			}
 		}
 	}
+
+	/*public inputListener implements Runnable{
+			
+	}*/
 }
