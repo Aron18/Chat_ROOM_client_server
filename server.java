@@ -1,3 +1,4 @@
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -15,13 +16,13 @@ public class server {
         PrintWriter out;
         Socket socket;
 
-
         public ServerProcess(Socket clientSocket) throws IOException {
             try {
                 socket = clientSocket;
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
             } catch (Exception ex) {
+                socket.close();
                 ex.printStackTrace();
             }
         }
@@ -80,12 +81,12 @@ public class server {
 
     public void go() {
         try {
-            ServerSocket serverSock = new ServerSocket(5000);
+            ServerSocket serverSock = new ServerSocket(5000);		//1024-65535
             hashset = new HashSet<>();
             while (true) {
                 Socket socket;
                 socket = serverSock.accept();
-                hashset.add(socket); //
+                hashset.add(socket);
                 Thread t = new Thread(new ServerProcess(socket));
                 t.start();
                 System.out.println("get a connection");
