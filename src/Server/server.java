@@ -7,7 +7,7 @@ import java.util.*;
 
 public class server {
     PrintWriter out;
-    String receive, worked;
+    String receive, worked,hell;
     StringTokenizer token;
     Set<Socket> hashset;
 
@@ -15,8 +15,10 @@ public class server {
         BufferedReader in;
         PrintWriter out;
         Socket socket;
+        //database ODB = new database();
 
         public ServerProcess(Socket clientSocket) throws IOException {
+
             try {
                 socket = clientSocket;
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -37,6 +39,15 @@ public class server {
                     if (worked.equals("user_name")) {
                         String name1 = token.nextToken();
                         hello(name1);
+                        /*if(ODB.check(name1)){
+                            hell = "welcome back,"+name1;
+                            hello(hell);
+                        }
+                        else{
+                            ODB.adduser(name1);
+                            hell= "Thanks for trying us!Welcome,"+ name1;
+                            hello(hell);
+                        }*/
                     } else if (worked.equals("Message")) {
                         String mes = token.nextToken();    //get the message
                         String uer = token.nextToken();    //get the user
@@ -56,7 +67,8 @@ public class server {
             try {
                 PrintWriter psend = new PrintWriter(new BufferedWriter(new OutputStreamWriter(s.getOutputStream())));
                 //String name = token.nextToken();	//get the user name
-                psend.println("!!!" + " " + name + " is online now" + "!!!");
+                //psend.println(name);
+                psend.println("!!!" + " "+ name + "is online now");
                 psend.flush();
                 System.out.println("!!!" + " " + name + " is online now");
             } catch (Exception ex) {
