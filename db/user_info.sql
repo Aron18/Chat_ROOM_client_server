@@ -1,5 +1,5 @@
 create table user_info{
-	user_name varchar[20] not null
+	user_name varchar(20) not null
 	};
 
 
