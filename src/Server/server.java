@@ -67,8 +67,8 @@ public class server {
             try {
                 PrintWriter psend = new PrintWriter(new BufferedWriter(new OutputStreamWriter(s.getOutputStream())));
                 //String name = token.nextToken();	//get the user name
-                //psend.println(name);
-                psend.println("!!!" + " "+ name + "is online now");
+                psend.println(name);
+                //psend.println("!!!" + " "+ name + "is online now");
                 psend.flush();
                 System.out.println("!!!" + " " + name + " is online now");
             } catch (Exception ex) {

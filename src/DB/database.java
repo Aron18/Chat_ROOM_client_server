@@ -91,9 +91,4 @@ public class database{
             }
         }
     }
-
-    public  static void main(String args[]){
-        database DB = new database();
-        DB.getConnection();
-    }
 }
