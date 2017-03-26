@@ -151,6 +151,11 @@ public class client {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                try{
+                    socket.close();
+                }catch(Exception ex){
+                    ex.printStackTrace();
+                }
                 System.out.println("User is offline");
             }
         }

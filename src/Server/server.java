@@ -15,7 +15,7 @@ public class server {
         BufferedReader in;
         PrintWriter out;
         Socket socket;
-        //database ODB = new database();
+        database ODB = new database();
 
         public ServerProcess(Socket clientSocket) throws IOException {
 
@@ -38,8 +38,8 @@ public class server {
                     worked = token.nextToken();    //Returns the next token from this string tokenizer
                     if (worked.equals("user_name")) {
                         String name1 = token.nextToken();
-                        hello(name1);
-                        /*if(ODB.check(name1)){
+                        //hello(name1);
+                        if(ODB.check(name1)){
                             hell = "welcome back,"+name1;
                             hello(hell);
                         }
@@ -47,7 +47,7 @@ public class server {
                             ODB.adduser(name1);
                             hell= "Thanks for trying us!Welcome,"+ name1;
                             hello(hell);
-                        }*/
+                        }
                     } else if (worked.equals("Message")) {
                         String mes = token.nextToken();    //get the message
                         String uer = token.nextToken();    //get the user

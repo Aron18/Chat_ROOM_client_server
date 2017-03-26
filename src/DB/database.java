@@ -13,7 +13,7 @@ public class database{
     private static String USERNAMR = "SCOTT";
     private static String PASSWORD = "12345";
     private static String DRVIER = "oracle.jdbc.OracleDriver";
-    private static String URL = "jdbc:oracle:thin:@127.0.0.1:1521:USER_INFO";
+    private static String URL = "jdbc:oracle:thin:@127.0.0.1:1521:orcl";
 
     // 创建一个数据库连接
     protected Connection connection = null;
@@ -90,5 +90,10 @@ public class database{
                 e.printStackTrace();
             }
         }
+    }
+
+    public  static void main(String args[]){
+        database DB = new database();
+        DB.getConnection();
     }
 }
